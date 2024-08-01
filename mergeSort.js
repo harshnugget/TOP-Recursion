@@ -1,48 +1,69 @@
-// FUNCTION mergeSort(array):
-//     // BASE CASE:
-//     if length of array is 1:
-//         return array
+function mergeSort(array) {
+  // Base case: if the array has 1 or 0 elements, it's already sorted
+  if (array.length <= 1) {
+    return array;
+  } else {
+    // Recursive case: divide the array into left and right halves
+    const middleOfArray = array.length / 2;
+    let leftHalf = array.slice(0, middleOfArray);
+    let rightHalf = array.slice(middleOfArray);
 
-//     // RECURSIVE CASE:
-//     else if length of array is greater than 1:
-//         // Divide the array into two halves
-//         mid = length of array // 2
-//         leftArr = array[0:mid]
-//         rightArr = array[mid:length of array]
+    // Recursively divide and sort both halves
+    leftHalf = mergeSort(leftHalf);
+    rightHalf = mergeSort(rightHalf);
 
-//         // Recursively sort both halves
-//         numLeft = mergeSort(leftArr)
-//         numRight = mergeSort(rightArr)
+    // Define empty array for merging both sorted halves
+    const merged = [];
 
-//         // Combine (merge) the two sorted halves into a single sorted array
-//         merged = merge(numLeft, numRight)
+    // Initialize two pointers to track numbers to compare in both halves
+    let i = 0; // Left half array index
+    let j = 0; // Right half array index
 
-//         // Return the merged array
-//         return merged
+    // Merge the two sorted halves into one sorted array
+    while (i < leftHalf.length && j < rightHalf.length) {
+      if (leftHalf[i] <= rightHalf[j]) {
+        merged.push(leftHalf[i]);
+        i++;
+      } else {
+        merged.push(rightHalf[j]);
+        j++;
+      }
+    }
 
-// // Helper function to merge two sorted arrays
-// FUNCTION merge(leftArr, rightArr):
-//     merged = []
-//     i = 0 // Index for leftArr
-//     j = 0 // Index for rightArr
+    // If there are remaining elements in the left half, add them to the merged array
+    while (i < leftHalf.length) {
+      merged.push(leftHalf[i]);
+      i++;
+    }
 
-//     // Merge the two arrays while elements remain in both
-//     while i < length of leftArr and j < length of rightArr:
-//         if leftArr[i] <= rightArr[j]:
-//             merged.append(leftArr[i])
-//             i = i + 1
-//         else:
-//             merged.append(rightArr[j])
-//             j = j + 1
+    // If there are remaining elements in the right half, add them to the merged array
+    while (j < rightHalf.length) {
+      merged.push(rightHalf[j]);
+      j++;
+    }
 
-//     // If there are remaining elements in leftArr, add them
-//     while i < length of leftArr:
-//         merged.append(leftArr[i])
-//         i = i + 1
+    return merged;
+  }
+}
 
-//     // If there are remaining elements in rightArr, add them
-//     while j < length of rightArr:
-//         merged.append(rightArr[j])
-//         j = j + 1
+// Function to generate an unsorted array of 100 random numbers
+function generateUnsortedArray() {
+  const unsortedArray = [];
 
-//     return merged
+  for (let i = 0; i < 100; i++) {
+    const randomNum = Math.floor(Math.random() * 1000);
+    unsortedArray.push(randomNum);
+  }
+
+  return unsortedArray;
+}
+
+// Example usage:
+
+// Generate an unsorted array
+const unsortedArray = generateUnsortedArray();
+console.log("Unsorted Array:", unsortedArray);
+
+// Sort the array using mergeSort
+const sortedArray = mergeSort(unsortedArray);
+console.log("Sorted Array:", sortedArray); // Print the sorted array to the console
